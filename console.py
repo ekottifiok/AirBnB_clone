@@ -9,7 +9,7 @@ class HBNBCommand(cmd.Cmd):
     prompt = "(hbnb) "
     file = None
 
-    def do_help(self, arg: str) -> str:
+    def do_help(self, arg: str) -> bool | None:
         """handles the help command
 
         Args:
