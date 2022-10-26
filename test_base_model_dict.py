@@ -16,9 +16,9 @@ for key in my_model_json.keys():
 
 print("--")
 my_new_model = BaseModel(**my_model_json)
-# print(my_new_model.id)
-# print(my_new_model)
-# print(type(my_new_model.created_at))
-#
-# print("--")
-# print(my_model is my_new_model)
+print(my_new_model.id)
+print(my_new_model)
+print(type(my_new_model.created_at))
+
+print("--")
+print(my_model is my_new_model)
