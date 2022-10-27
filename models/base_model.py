@@ -38,7 +38,8 @@ class BaseModel:
         handles the print of the class
         :return: string
         """
-        return "[{:s}] ({:s}) {:s}".format(self.__class__.__name__, self.id, str(self.__dict__))
+        return "[{:s}] ({:s}) {:s}".format(
+            self.__class__.__name__, self.id, str(self.__dict__))
 
     def save(self):
         """

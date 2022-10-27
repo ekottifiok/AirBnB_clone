@@ -23,7 +23,8 @@ class HBNBCommand(cmd.Cmd):
     prompt = "(hbnb) "
 
     def __init__(self):
-        self.__accepted_model = ['BaseModel', 'User', 'City', 'Place', 'Amenity', 'Review', 'State']
+        self.__accepted_model = ['BaseModel', 'User', 'City',
+                                 'Place', 'Amenity', 'Review', 'State']
         self.__instance_command = ['all', 'count', 'show', 'destroy', 'update']
         self.__model_init = None
         self.__all_objects = storage.all()
@@ -70,10 +71,12 @@ class HBNBCommand(cmd.Cmd):
             print('** class doesn\'t exist **')
             return
         self.__model_init = eval(arg)()
-        self.__all_objects[arg + '.' + str(self.__model_init.id)] = self.__model_init.to_dict()
+        self.__all_objects[arg + '.' + str(self.__model_init.id)] =\
+            self.__model_init.to_dict()
         print(self.__model_init.id)
         with open(self.__file_name, mode='w', encoding='utf-8') as f_write:
-            dump({key: value.to_dict() for key, value in self.__all_objects.items()}, f_write)
+            dump({key: value.to_dict()
+                  for key, value in self.__all_objects.items()}, f_write)
 
     def do_show(self, arg: str):
         """
@@ -121,7 +124,8 @@ class HBNBCommand(cmd.Cmd):
         if search_id in self.__all_objects.keys():
             self.__all_objects.pop(search_id)
             with open(self.__file_name, mode='w', encoding='utf-8') as f_write:
-                dump({key: value.to_dict() for key, value in self.__all_objects.items()}, f_write)
+                dump({key: value.to_dict()
+                      for key, value in self.__all_objects.items()}, f_write)
         else:
             print('** no instance found **')
             return
@@ -181,7 +185,8 @@ class HBNBCommand(cmd.Cmd):
             return
         class_object.__setattr__(attr_name, arg_array[3])
         with open(self.__file_name, mode='w', encoding='utf-8') as f_write:
-            dump({key: value.to_dict() for key, value in self.__all_objects.items()}, f_write)
+            dump({key: value.to_dict()
+                  for key, value in self.__all_objects.items()}, f_write)
 
     def do_User(self, arg: str):
         if arg == '':
@@ -209,13 +214,18 @@ class HBNBCommand(cmd.Cmd):
         elif command == 'update':
             if len(arg_array) != 2:
                 return
-            arg_array[1] = arg_array[1][1:-1].replace('{', '').replace('}', '').replace(':', '').replace(',', '').replace('\'', '').replace('"', '')
+            arg_array[1] = arg_array[1][1:-1]\
+                .replace('{', '').replace('}', '')\
+                .replace(':', '').replace(',', '')\
+                .replace('\'', '').replace('"', '')
             new_arg_array = arg_array[1].split(' ')
             len_new_arg_array = len(new_arg_array)
             if len_new_arg_array < 3 or len_new_arg_array % 2 != 1:
                 return
             for key in range(1, len_new_arg_array, 2):
-                update_str = ' '.join(['User', new_arg_array[0], new_arg_array[key], new_arg_array[key+1]])
+                update_str = ' '.join([
+                    'User', new_arg_array[0],
+                    new_arg_array[key], new_arg_array[key+1]])
                 self.do_update(update_str)
 
 

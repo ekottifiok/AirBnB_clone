@@ -39,7 +39,8 @@ class FileStorage:
         :return:
         """
         with open(self.__file_path, mode='w', encoding='utf-8') as f_write:
-            dump({key: value.to_dict() for key, value in self.__objects.items()}, f_write)
+            dump({key: value.to_dict()
+                  for key, value in self.__objects.items()}, f_write)
 
     def reload(self):
         """
