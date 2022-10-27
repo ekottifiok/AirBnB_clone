@@ -5,6 +5,12 @@ FileStorage module
 from json import dump, load
 from os import path
 from models.base_model import BaseModel
+from models.user import User
+from models.city import City
+from models.place import Place
+from models.amenity import Amenity
+from models.review import Review
+from models.state import State
 
 
 class FileStorage:
@@ -25,17 +31,23 @@ class FileStorage:
         """
         Add new objects to the self dictionary
         """
-        # self.__objects[obj.__class__.__name__ + '.' + obj.id] = obj
-        pass
+        self.__objects[obj.__class__.__name__ + '.' + obj.id] = obj
 
     def save(self):
-        with open(self.__file_path, mode='w', encoding='utf-8') as file_write:
-            dump({key: value.to_dict() for key, value in self.__objects.items()}, file_write)
+        """
+        saves new files to self.__file_path
+        :return:
+        """
+        with open(self.__file_path, mode='w', encoding='utf-8') as f_write:
+            dump({key: value.to_dict() for key, value in self.__objects.items()}, f_write)
 
     def reload(self):
+        """
+        retrieves data from a file self.__file_path
+        :return:
+        """
         if path.exists(self.__file_path):
-            with open(self.__file_path, mode='r', encoding='utf-8') as file_read:
-                data_read = load(file_read)
+            with open(self.__file_path, mode='r', encoding='utf-8') as f_read:
+                data_read = load(f_read)
                 for _, value in data_read.items():
-                    base_name = value.pop('__class__')
-                    self.new(eval(base_name)(**value))
+                    self.new(eval(value.pop('__class__'))(**value))

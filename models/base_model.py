@@ -22,7 +22,7 @@ class BaseModel:
         """
         if kwargs:
             for key, value in kwargs.items():
-                if key is "__class__":
+                if key == "__class__":
                     continue
                 if key in ['created_at', 'updated_at']:
                     value = datetime.strptime(value, "%Y-%m-%dT%H:%M:%S.%f")
@@ -38,7 +38,7 @@ class BaseModel:
         handles the print of the class
         :return: string
         """
-        return "[{:s}], ({:s}), <{:s}>".format(self.__class__.__name__, self.id, str(self.__dict__))
+        return "[{:s}] ({:s}) {:s}".format(self.__class__.__name__, self.id, str(self.__dict__))
 
     def save(self):
         """
