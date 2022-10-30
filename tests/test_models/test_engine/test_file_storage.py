@@ -1,8 +1,9 @@
 #!/usr/bin/python3
 ''' unit test module for filestorage class'''
 import unittest
-from models.base_model import BaseModel
+
 from models import storage
+from models.base_model import BaseModel
 from models.engine.file_storage import FileStorage
 
 
@@ -29,6 +30,7 @@ class TestFileStorageInit(unittest.TestCase):
     def test_storage_initialization(self):
         """Tests storage created in __init__.py"""
         self.assertEqual(type(models.storage), FileStorage)
+
 
 class test_storage(unittest.TestCase):
     '''file storage class definition'''
@@ -76,7 +78,7 @@ class test_storage(unittest.TestCase):
         '''check new method is valid'''
         obj = BaseModel(id='123')
         obj_key = 'BaseModel' + '.' + obj.id
-        
+
         self.assertEqual(storage.all(), {})
         obj.id = 123
         storage.new(obj)
@@ -92,6 +94,7 @@ class test_storage(unittest.TestCase):
         storage.reload()
         self.assertTrue(obj_key in storage.all().keys())
         self.assertEqual(obj.id, storage.all()[obj_key].id)
+
 
 if __name__ == "__main__":
     unittest.main()
