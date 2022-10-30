@@ -1,10 +1,11 @@
 #!/usr/bin/python3
 ''' unit test module for filestorage class'''
-import unittest
 
+import unittest
 from models import storage
 from models.base_model import BaseModel
 from models.engine.file_storage import FileStorage
+from os import path
 
 
 class TestFileStorageInit(unittest.TestCase):
@@ -29,7 +30,7 @@ class TestFileStorageInit(unittest.TestCase):
 
     def test_storage_initialization(self):
         """Tests storage created in __init__.py"""
-        self.assertEqual(type(models.storage), FileStorage)
+        self.assertEqual(type(storage), FileStorage)
 
 
 class test_storage(unittest.TestCase):
@@ -56,11 +57,11 @@ class test_storage(unittest.TestCase):
 
     def test_all(self):
         """ check  all function """
-        storage = FileStorage()
-        obj = storage.all()
+        all_storage = FileStorage()
+        obj = all_storage.all()
         self.assertIsNotNone(obj)
         self.assertEqual(type(obj), dict)
-        self.assertIs(obj, storage._FileStorage__objects)
+        self.assertIs(obj, all_storage._FileStorage__objects)
 
     def test_save_create(self):
         """ Save  """
@@ -85,8 +86,8 @@ class test_storage(unittest.TestCase):
         self.assertEqual(obj, storage.all()[obj_key])
 
     def test_reload(self):
-        '''check reload classes'''
-        obj - BaseModel()
+        """check reload classes"""
+        obj = BaseModel()
         obj_key = 'BaseModel' + '.' + obj.id
         storage.save()
         self.assertTrue(path.isfile('file.json'))

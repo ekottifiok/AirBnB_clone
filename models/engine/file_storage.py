@@ -31,7 +31,7 @@ class FileStorage:
         """
         Add new objects to the self dictionary
         """
-        self.__objects[obj.__class__.__name__ + '.' + obj.id] = obj
+        self.__objects[obj.__class__.__name__ + '.' + str(obj.id)] = obj
 
     def save(self):
         """
