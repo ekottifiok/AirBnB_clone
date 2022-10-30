@@ -19,7 +19,7 @@ class HBNBCommand(cmd.Cmd):
     """
     The class definition for the console
     """
-    intro = "Welcome to my simple console"
+    # intro = "Welcome to my simple console"
     prompt = "(hbnb) "
 
     def __init__(self):
