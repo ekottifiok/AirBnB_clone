@@ -10,12 +10,10 @@ Defines unittests for console.py
     TestHBNBCommand_destroy
     TestHBNBCommand_update
 """
-import os
-import sys
-from unittest import TestCase
-from console import HBNBCommand
 from io import StringIO
 from unittest import mock, TestCase, main
+
+from console import HBNBCommand
 
 
 class TestHBNBCommand_prompt(TestCase):
@@ -62,7 +60,7 @@ class TestHBNBCommand_help(TestCase):
         help_result = ("Documented commands (type help <topic>):\n"
                        "========================================\n"
                        "EOF  User  all  create  destroy  help  quit "
-			" show  update")
+                       " show  update")
         self.assertFalse(HBNBCommand().onecmd("help"))
         self.assertEqual(help_result, self.patcher.getvalue().strip())
 
@@ -132,6 +130,7 @@ class TestHBNBCommand_exit(TestCase):
         - test_quit_exit()
         - test_EOF_exit()
     """
+
     def test_quit_exit(self):
         self.assertTrue(HBNBCommand().onecmd("quit"))
 
@@ -143,17 +142,20 @@ class TestHBNBCommand_create(TestCase):
     """
     Defines unittests for tests create
     """
+
     def setUp(self) -> None:
         self.sys_out = mock.patch('sys.stdout', new=StringIO(), spec=True)
         self.patcher = self.sys_out.start()
 
     def test_class_name_missing(self):
         self.assertFalse(HBNBCommand().onecmd("create"))
-        self.assertEqual('** class name missing **', self.patcher.getvalue().strip())
+        self.assertEqual('** class name missing **',
+                         self.patcher.getvalue().strip())
 
     def test_class_does_not_exist(self):
         self.assertFalse(HBNBCommand().onecmd('create MyUser'))
-        self.assertEqual('** class doesn\'t exist **', self.patcher.getvalue().strip())
+        self.assertEqual('** class doesn\'t exist **',
+                         self.patcher.getvalue().strip())
 
     def tearDown(self) -> None:
         self.sys_out.stop()
@@ -163,17 +165,20 @@ class TestHBNBCommand_show(TestCase):
     """
     Defines unittests for tests show
     """
+
     def setUp(self) -> None:
         self.sys_out = mock.patch('sys.stdout', new=StringIO(), spec=True)
         self.patcher = self.sys_out.start()
 
     def test_class_name_missing(self):
         self.assertFalse(HBNBCommand().onecmd("show"))
-        self.assertEqual('** class name missing **', self.patcher.getvalue().strip())
+        self.assertEqual('** class name missing **',
+                         self.patcher.getvalue().strip())
 
     def test_class_does_not_exist(self):
         self.assertFalse(HBNBCommand().onecmd('show MyUser'))
-        self.assertEqual('** class doesn\'t exist **', self.patcher.getvalue().strip())
+        self.assertEqual('** class doesn\'t exist **',
+                         self.patcher.getvalue().strip())
 
     def tearDown(self) -> None:
         self.sys_out.stop()
@@ -183,17 +188,20 @@ class TestHBNBCommand_destroy(TestCase):
     """
     Defines unittests for tests destroy
     """
+
     def setUp(self) -> None:
         self.sys_out = mock.patch('sys.stdout', new=StringIO(), spec=True)
         self.patcher = self.sys_out.start()
 
     def test_class_name_missing(self):
         self.assertFalse(HBNBCommand().onecmd("destroy"))
-        self.assertEqual('** class name missing **', self.patcher.getvalue().strip())
+        self.assertEqual('** class name missing **',
+                         self.patcher.getvalue().strip())
 
     def test_class_does_not_exist(self):
         self.assertFalse(HBNBCommand().onecmd('destroy MyUser'))
-        self.assertEqual('** class doesn\'t exist **', self.patcher.getvalue().strip())
+        self.assertEqual('** class doesn\'t exist **',
+                         self.patcher.getvalue().strip())
 
     def tearDown(self) -> None:
         self.sys_out.stop()
@@ -203,17 +211,20 @@ class TestHBNBCommand_all(TestCase):
     """
     Defines unittests for tests all
     """
+
     def setUp(self) -> None:
         self.sys_out = mock.patch('sys.stdout', new=StringIO(), spec=True)
         self.patcher = self.sys_out.start()
 
     def test_class_name_missing(self):
         self.assertFalse(HBNBCommand().onecmd("all"))
-        self.assertEqual('** class name missing **', self.patcher.getvalue().strip())
+        self.assertEqual('** class name missing **',
+                         self.patcher.getvalue().strip())
 
     def test_class_does_not_exist(self):
         self.assertFalse(HBNBCommand().onecmd('all MyUser'))
-        self.assertEqual('** class doesn\'t exist **', self.patcher.getvalue().strip())
+        self.assertEqual('** class doesn\'t exist **',
+                         self.patcher.getvalue().strip())
 
     def tearDown(self) -> None:
         self.sys_out.stop()
@@ -223,17 +234,20 @@ class TestHBNBCommand_update(TestCase):
     """
     Defines unittests for tests update
     """
+
     def setUp(self) -> None:
         self.sys_out = mock.patch('sys.stdout', new=StringIO(), spec=True)
         self.patcher = self.sys_out.start()
 
     def test_class_name_missing(self):
         self.assertFalse(HBNBCommand().onecmd("update"))
-        self.assertEqual('** class name missing **', self.patcher.getvalue().strip())
+        self.assertEqual('** class name missing **',
+                         self.patcher.getvalue().strip())
 
     def test_class_does_not_exist(self):
         self.assertFalse(HBNBCommand().onecmd('update MyUser'))
-        self.assertEqual('** class doesn\'t exist **', self.patcher.getvalue().strip())
+        self.assertEqual('** class doesn\'t exist **',
+                         self.patcher.getvalue().strip())
 
     def tearDown(self) -> None:
         self.sys_out.stop()
@@ -243,16 +257,19 @@ class TestHBNBCommand_User(TestCase):
     """
     Defines unittests for tests create
     """
+
     def setUp(self) -> None:
         self.sys_out = mock.patch('sys.stdout', new=StringIO(), spec=True)
         self.patcher = self.sys_out.start()
 
     # def test_class_name_missing(self):
     #     self.assertFalse(HBNBCommand().onecmd(".all()"))
-    #     self.assertEqual('** class name missing **', self.patcher.getvalue().strip())
+    #     self.assertEqual('** class name missing **',
+    #       self.patcher.getvalue().strip())
 
     def tearDown(self) -> None:
         self.sys_out.stop()
+
 
 if __name__ == '__main__':
     main()
