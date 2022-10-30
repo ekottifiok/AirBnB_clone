@@ -61,7 +61,8 @@ class TestHBNBCommand_help(TestCase):
     def test_help(self):
         help_result = ("Documented commands (type help <topic>):\n"
                        "========================================\n"
-                       "EOF  User  all  create  destroy  help  quit  show  update")
+                       "EOF  User  all  create  destroy  help  quit "
+			" show  update")
         self.assertFalse(HBNBCommand().onecmd("help"))
         self.assertEqual(help_result, self.patcher.getvalue().strip())
 
