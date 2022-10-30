@@ -23,6 +23,9 @@ class HBNBCommand(cmd.Cmd):
     prompt = "(hbnb) "
 
     def __init__(self):
+        """
+        initializes the instance class
+        """
         self.__accepted_model = ['BaseModel', 'User', 'City',
                                  'Place', 'Amenity', 'Review', 'State']
         self.__instance_command = ['all', 'count', 'show', 'destroy', 'update']
