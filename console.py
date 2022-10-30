@@ -58,7 +58,7 @@ class HBNBCommand(cmd.Cmd):
         :param arg: EOF is empty line + ENTER
         :return: bool True
         """
-        print('\n')
+        print("")
         return True
 
     def do_create(self, arg: str):
