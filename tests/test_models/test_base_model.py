@@ -24,7 +24,7 @@ class test_BaseModel(unittest.TestCase):
         self.assertIsInstance(user, base_model.BaseModel)
         user_dict = user.to_dict()
 
-        # testig *args and **kwargs
+        # testing *args and **kwargs
         new_user = base_model.BaseModel(**user_dict)
         self.assertTrue(hasattr(new_user, "id"))
         self.assertTrue(hasattr(new_user, "created_at"))

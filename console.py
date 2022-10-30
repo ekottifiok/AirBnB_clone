@@ -21,18 +21,26 @@ class HBNBCommand(cmd.Cmd):
     """
     # intro = "Welcome to my simple console"
     prompt = "(hbnb) "
+    _instance_command = ['all', 'count', 'show', 'destroy', 'update']
+    _accepted_model = ['BaseModel', 'User', 'City',
+                        'Place', 'Amenity', 'Review', 'State']
+    _file_name = "file.json"
 
     def __init__(self):
         """
         initializes the instance class
         """
-        self.__accepted_model = ['BaseModel', 'User', 'City',
-                                 'Place', 'Amenity', 'Review', 'State']
-        self.__instance_command = ['all', 'count', 'show', 'destroy', 'update']
         self.__model_init = None
         self.__all_objects = storage.all()
-        self.__file_name = "file.json"
+
         super().__init__()
+
+    def emptyline(self) -> bool:
+        """
+        handles an emptyline
+        :return: bool false
+        """
+        return False
 
     def do_help(self, arg: str) -> bool | None:
         """
@@ -70,14 +78,14 @@ class HBNBCommand(cmd.Cmd):
         if arg == '':
             print('** class name missing **')
             return
-        if arg not in self.__accepted_model:
+        if arg not in HBNBCommand._accepted_model:
             print('** class doesn\'t exist **')
             return
         self.__model_init = eval(arg)()
         self.__all_objects[arg + '.' + str(self.__model_init.id)] =\
             self.__model_init.to_dict()
         print(self.__model_init.id)
-        with open(self.__file_name, mode='w', encoding='utf-8') as f_write:
+        with open(HBNBCommand._file_name, mode='w', encoding='utf-8') as f_write:
             dump({key: value.to_dict()
                   for key, value in self.__all_objects.items()}, f_write)
 
@@ -91,7 +99,7 @@ class HBNBCommand(cmd.Cmd):
             print('** class name missing **')
             return
         class_name = arg.split()[0]
-        if class_name not in self.__accepted_model:
+        if class_name not in HBNBCommand._accepted_model:
             print('** class doesn\'t exist **')
             return
         try:
@@ -115,7 +123,7 @@ class HBNBCommand(cmd.Cmd):
             print('** class name missing **')
             return
         class_name = arg.split()[0]
-        if class_name not in self.__accepted_model:
+        if class_name not in HBNBCommand._accepted_model:
             print('** class doesn\'t exist **')
             return
         try:
@@ -126,7 +134,7 @@ class HBNBCommand(cmd.Cmd):
         search_id = class_name + '.' + id_string
         if search_id in self.__all_objects.keys():
             self.__all_objects.pop(search_id)
-            with open(self.__file_name, mode='w', encoding='utf-8') as f_write:
+            with open(HBNBCommand._file_name, mode='w', encoding='utf-8') as f_write:
                 dump({key: value.to_dict()
                       for key, value in self.__all_objects.items()}, f_write)
         else:
@@ -142,7 +150,7 @@ class HBNBCommand(cmd.Cmd):
         if arg == '':
             print('** class name missing **')
             return
-        if arg not in self.__accepted_model:
+        if arg not in HBNBCommand._accepted_model:
             print('** class doesn\'t exist **')
             return
         result = []
@@ -163,7 +171,7 @@ class HBNBCommand(cmd.Cmd):
         arg_array = arg.split()
         arg_len = len(arg_array)
         class_name = arg_array[0]
-        if class_name not in self.__accepted_model:
+        if class_name not in HBNBCommand._accepted_model:
             print('** class doesn\'t exist **')
             return
         if arg_len < 2:
@@ -187,7 +195,7 @@ class HBNBCommand(cmd.Cmd):
         if arg_len < 4:
             return
         class_object.__setattr__(attr_name, arg_array[3])
-        with open(self.__file_name, mode='w', encoding='utf-8') as f_write:
+        with open(HBNBCommand._file_name, mode='w', encoding='utf-8') as f_write:
             dump({key: value.to_dict()
                   for key, value in self.__all_objects.items()}, f_write)
 
@@ -201,7 +209,7 @@ class HBNBCommand(cmd.Cmd):
             return
         arg_array = arg[1:-1].split('(')
         command = arg_array[0]
-        if command not in self.__instance_command:
+        if command not in HBNBCommand._instance_command:
             return
         if command == 'all':
             self.do_all('User')
