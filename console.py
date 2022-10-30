@@ -189,6 +189,11 @@ class HBNBCommand(cmd.Cmd):
                   for key, value in self.__all_objects.items()}, f_write)
 
     def do_User(self, arg: str):
+        """
+        handles all commands for the User
+        :param arg: accepts keyword User
+        :return:
+        """
         if arg == '':
             return
         arg_array = arg[1:-1].split('(')
