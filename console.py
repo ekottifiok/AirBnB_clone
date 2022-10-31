@@ -3,16 +3,11 @@
 contains the entry point of the command interpreter
 """
 from __future__ import annotations
+
 import cmd
 from json import dump
+
 from models import storage
-from models.base_model import BaseModel
-from models.user import User
-from models.city import City
-from models.place import Place
-from models.amenity import Amenity
-from models.review import Review
-from models.state import State
 
 
 class HBNBCommand(cmd.Cmd):
@@ -23,7 +18,7 @@ class HBNBCommand(cmd.Cmd):
     prompt = "(hbnb) "
     _instance_command = ['all', 'count', 'show', 'destroy', 'update']
     _accepted_model = ['BaseModel', 'User', 'City',
-                        'Place', 'Amenity', 'Review', 'State']
+                       'Place', 'Amenity', 'Review', 'State']
     _file_name = "file.json"
 
     def __init__(self):
@@ -82,10 +77,11 @@ class HBNBCommand(cmd.Cmd):
             print('** class doesn\'t exist **')
             return
         self.__model_init = eval(arg)()
-        self.__all_objects[arg + '.' + str(self.__model_init.id)] =\
+        self.__all_objects[arg + '.' + str(self.__model_init.id)] = \
             self.__model_init.to_dict()
-        print(self.__model_init.id)
-        with open(HBNBCommand._file_name, mode='w', encoding='utf-8') as f_write:
+d        print(eval(arg).id)
+        with open(HBNBCommand._file_name,
+                  mode='w', encoding='utf-8') as f_write:
             dump({key: value.to_dict()
                   for key, value in self.__all_objects.items()}, f_write)
 
@@ -134,7 +130,8 @@ class HBNBCommand(cmd.Cmd):
         search_id = class_name + '.' + id_string
         if search_id in self.__all_objects.keys():
             self.__all_objects.pop(search_id)
-            with open(HBNBCommand._file_name, mode='w', encoding='utf-8') as f_write:
+            with open(HBNBCommand._file_name,
+                      mode='w', encoding='utf-8') as f_write:
                 dump({key: value.to_dict()
                       for key, value in self.__all_objects.items()}, f_write)
         else:
@@ -195,7 +192,8 @@ class HBNBCommand(cmd.Cmd):
         if arg_len < 4:
             return
         class_object.__setattr__(attr_name, arg_array[3])
-        with open(HBNBCommand._file_name, mode='w', encoding='utf-8') as f_write:
+        with open(HBNBCommand._file_name,
+                  mode='w', encoding='utf-8') as f_write:
             dump({key: value.to_dict()
                   for key, value in self.__all_objects.items()}, f_write)
 
@@ -230,9 +228,9 @@ class HBNBCommand(cmd.Cmd):
         elif command == 'update':
             if len(arg_array) != 2:
                 return
-            arg_array[1] = arg_array[1][1:-1]\
-                .replace('{', '').replace('}', '')\
-                .replace(':', '').replace(',', '')\
+            arg_array[1] = arg_array[1][1:-1] \
+                .replace('{', '').replace('}', '') \
+                .replace(':', '').replace(',', '') \
                 .replace('\'', '').replace('"', '')
             new_arg_array = arg_array[1].split(' ')
             len_new_arg_array = len(new_arg_array)
@@ -241,7 +239,7 @@ class HBNBCommand(cmd.Cmd):
             for key in range(1, len_new_arg_array, 2):
                 update_str = ' '.join([
                     'User', new_arg_array[0],
-                    new_arg_array[key], new_arg_array[key+1]])
+                    new_arg_array[key], new_arg_array[key + 1]])
                 self.do_update(update_str)
 
 
