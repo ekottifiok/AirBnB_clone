@@ -79,7 +79,7 @@ class HBNBCommand(cmd.Cmd):
         self.__model_init = eval(arg)()
         self.__all_objects[arg + '.' + str(self.__model_init.id)] = \
             self.__model_init.to_dict()
-d        print(eval(arg).id)
+        print(eval(arg).id)
         with open(HBNBCommand._file_name,
                   mode='w', encoding='utf-8') as f_write:
             dump({key: value.to_dict()
