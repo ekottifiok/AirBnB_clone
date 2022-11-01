@@ -7,7 +7,7 @@ from models import base_model
 
 class test_BaseModel(unittest.TestCase):
     """
-    Unit test for the class BaseModel
+    Unittest for the class BaseModel
     """
 
     def test_init(self):

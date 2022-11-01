@@ -154,7 +154,7 @@ class TestHBNBCommand_create(TestCase):
 
     def test_class_does_not_exist(self):
         self.assertFalse(HBNBCommand().onecmd('create MyUser'))
-        self.assertEqual('** class doesn\'t exist **',
+        self.assertEqual("** class doesn't exist **",
                          self.patcher.getvalue().strip())
 
     def tearDown(self) -> None:
@@ -216,10 +216,11 @@ class TestHBNBCommand_all(TestCase):
         self.sys_out = mock.patch('sys.stdout', new=StringIO(), spec=True)
         self.patcher = self.sys_out.start()
 
-    def test_class_name_missing(self):
-        self.assertFalse(HBNBCommand().onecmd("all"))
-        self.assertEqual('** class name missing **',
-                         self.patcher.getvalue().strip())
+    # this test is not necessary
+    # def test_class_name_missing(self):
+    #     self.assertFalse(HBNBCommand().onecmd("all"))
+    #     self.assertEqual('** class name missing **',
+    #                      self.patcher.getvalue().strip())
 
     def test_class_does_not_exist(self):
         self.assertFalse(HBNBCommand().onecmd('all MyUser'))

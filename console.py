@@ -96,9 +96,9 @@ class HBNBCommand(cmd.Cmd):
         :return:
         """
         arg_create = parse_arg(arg)
-        len_array = len(arg_create)
         if arg_create is None:
             return False
+        len_array = len(arg_create)
         if len_array != 1:
             return False
         print(eval(arg_create[0])().id)
