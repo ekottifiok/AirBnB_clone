@@ -3,11 +3,38 @@
 contains the entry point of the command interpreter
 """
 from __future__ import annotations
-
 import cmd
 from json import dump
-
 from models import storage
+from models.base_model import BaseModel
+from models.user import User
+from models.state import State
+from models.city import City
+from models.place import Place
+from models.amenity import Amenity
+from models.review import Review
+
+accepted_model = ['BaseModel', 'User', 'City',
+                  'Place', 'Amenity', 'Review', 'State']
+
+
+def parse_arg(arg: str, no_args=1) -> list[str] | None:
+    if arg == '':
+        print('** class name missing **')
+        return None
+    arg_array = arg.split()
+    len_array = len(arg_array)
+    if arg_array[0] not in accepted_model:
+        print('** class doesn\'t exist **')
+        return None
+    if len_array < 2 and no_args >= 2:
+        print('** instance id missing **')
+        return None
+    all_data_file = storage.all()
+    if no_args > 1 and f"{arg_array[0]}.{arg_array[1]}" not in all_data_file.keys():
+        print('** no instance found **')
+        return None
+    return arg_array
 
 
 class HBNBCommand(cmd.Cmd):
@@ -16,9 +43,6 @@ class HBNBCommand(cmd.Cmd):
     """
     # intro = "Welcome to my simple console"
     prompt = "(hbnb) "
-    _instance_command = ['all', 'count', 'show', 'destroy', 'update']
-    _accepted_model = ['BaseModel', 'User', 'City',
-                       'Place', 'Amenity', 'Review', 'State']
     _file_name = "file.json"
 
     def __init__(self):
@@ -70,20 +94,14 @@ class HBNBCommand(cmd.Cmd):
         :param arg: accepts keyword create
         :return:
         """
-        if arg == '':
-            print('** class name missing **')
-            return
-        if arg not in HBNBCommand._accepted_model:
-            print('** class doesn\'t exist **')
-            return
-        self.__model_init = eval(arg)()
-        self.__all_objects[arg + '.' + str(self.__model_init.id)] = \
-            self.__model_init.to_dict()
-        print(eval(arg).id)
-        with open(HBNBCommand._file_name,
-                  mode='w', encoding='utf-8') as f_write:
-            dump({key: value.to_dict()
-                  for key, value in self.__all_objects.items()}, f_write)
+        arg_create = parse_arg(arg)
+        len_array = len(arg_create)
+        if arg_create is None:
+            return False
+        if len_array != 1:
+            return False
+        print(eval(arg_create[0])().id)
+        storage.save()
 
     def do_show(self, arg: str):
         """
@@ -91,23 +109,11 @@ class HBNBCommand(cmd.Cmd):
         :param arg: accepts keyword show
         :return:
         """
-        if arg == '':
-            print('** class name missing **')
-            return
-        class_name = arg.split()[0]
-        if class_name not in HBNBCommand._accepted_model:
-            print('** class doesn\'t exist **')
-            return
-        try:
-            id_string = arg.split()[1]
-        except IndexError:
-            print('** instance id missing **')
-            return
-        search_id = class_name + '.' + id_string
-        if search_id in self.__all_objects.keys():
-            print(self.__all_objects.get(search_id))
-        else:
-            print('** no instance found **')
+        arg_show = parse_arg(arg, 2)
+        if arg_show is None:
+            return False
+        object_id = f'{arg_show[0]}.{arg_show[1]}'
+        print(storage.all().get(object_id))
 
     def do_destroy(self, arg: str):
         """
@@ -115,28 +121,11 @@ class HBNBCommand(cmd.Cmd):
         :param arg: accepts keyword destroy
         :return:
         """
-        if arg == '':
-            print('** class name missing **')
-            return
-        class_name = arg.split()[0]
-        if class_name not in HBNBCommand._accepted_model:
-            print('** class doesn\'t exist **')
-            return
-        try:
-            id_string = arg.split()[1]
-        except IndexError:
-            print('** instance id missing **')
-            return
-        search_id = class_name + '.' + id_string
-        if search_id in self.__all_objects.keys():
-            self.__all_objects.pop(search_id)
-            with open(HBNBCommand._file_name,
-                      mode='w', encoding='utf-8') as f_write:
-                dump({key: value.to_dict()
-                      for key, value in self.__all_objects.items()}, f_write)
-        else:
-            print('** no instance found **')
-            return
+        arg_show = parse_arg(arg, 2)
+        if arg_show is None:
+            return False
+        del storage.all()[f'{arg_show[0]}.{arg_show[1]}']
+        storage.save()
 
     def do_all(self, arg: str):
         """
@@ -144,16 +133,16 @@ class HBNBCommand(cmd.Cmd):
         :param arg: accepts keyword all
         :return:
         """
-        if arg == '':
-            print('** class name missing **')
-            return
-        if arg not in HBNBCommand._accepted_model:
-            print('** class doesn\'t exist **')
-            return
+        arg_all = None
         result = []
-        for key, value in self.__all_objects.items():
-            if arg in key:
-                result.append(value.__str__())
+        if arg != '':
+            arg_all = parse_arg(arg)
+            if arg_all is None:
+                return False
+        for key, value in storage.all().items():
+            if arg_all is not None and arg_all[0] not in key:
+                continue
+            result.append(value.__str__())
         print(result)
 
     def do_update(self, arg: str):
@@ -162,40 +151,24 @@ class HBNBCommand(cmd.Cmd):
         :param arg: accepts keyword update
         :return:
         """
-        if arg == '':
-            print('** class name missing **')
-            return
-        arg_array = arg.split()
-        arg_len = len(arg_array)
-        class_name = arg_array[0]
-        if class_name not in HBNBCommand._accepted_model:
-            print('** class doesn\'t exist **')
-            return
-        if arg_len < 2:
-            print('** instance id missing **')
-            return
-        id_string = arg_array[1]
-        search_id = class_name + '.' + id_string
-        if search_id not in self.__all_objects.keys():
-            print('** no instance found **')
-            return
-        class_object = self.__all_objects.get(search_id)
+        arg_update = parse_arg(arg, 3)
+        if arg_update is None:
+            return False
+        arg_len = len(arg_update)
         if arg_len < 3:
             print("** attribute name missing **")
             return
-        attr_name = arg_array[2]
+        attr_name = arg_update[2]
+        class_object = storage.all().get(f'{arg_update[0]}.{arg_update[1]}')
         if attr_name not in class_object.__dict__.keys():
             print('** value missing **')
             return
         if attr_name in ['id', 'created_at', 'updated_at']:
             return
         if arg_len < 4:
-            return
-        class_object.__setattr__(attr_name, arg_array[3])
-        with open(HBNBCommand._file_name,
-                  mode='w', encoding='utf-8') as f_write:
-            dump({key: value.to_dict()
-                  for key, value in self.__all_objects.items()}, f_write)
+            arg_update.append('')
+        class_object.__setattr__(attr_name, arg_update[3])
+        storage.save()
 
     def do_User(self, arg: str):
         """

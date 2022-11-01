@@ -20,7 +20,7 @@ class FileStorage:
     __file_path = "file.json"
     __objects = {}
 
-    def all(self):
+    def all(self) -> dict:
         """
         Return all the objects saved in the file
         :return: dict
