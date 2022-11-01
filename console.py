@@ -31,7 +31,8 @@ def parse_arg(arg: str, no_args=1) -> list[str] | None:
         print('** instance id missing **')
         return None
     all_data_file = storage.all()
-    if no_args > 1 and f"{arg_array[0]}.{arg_array[1]}" not in all_data_file.keys():
+    if no_args > 1 and f"{arg_array[0]}.{arg_array[1]}"\
+            not in all_data_file.keys():
         print('** no instance found **')
         return None
     return arg_array
