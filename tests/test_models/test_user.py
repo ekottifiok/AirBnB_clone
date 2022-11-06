@@ -5,33 +5,81 @@ User test module
 from unittest import TestCase, main
 from datetime import datetime
 from models.user import User
+from models import storage
 
 
-class test_User(TestCase):
+class TestUser_instantiation(TestCase):
+    """Unittests for testing instantiation of the User class."""
+
+    def test_no_args_instantiates(self):
+        self.assertEqual(User, type(User()))
+
+    def test_new_instance_stored_in_objects(self):
+        self.assertIn(User(), storage.all().values())
+
+    def test_id_is_public_str(self):
+        self.assertEqual(str, type(User().id))
+
+    def test_created_at_is_public_datetime(self):
+        self.assertEqual(datetime, type(User().created_at))
+
+    def test_updated_at_is_public_datetime(self):
+        self.assertEqual(datetime, type(User().updated_at))
+
+    def test_email_is_public_str(self):
+        self.assertEqual(str, type(User.email))
+
+    def test_password_is_public_str(self):
+        self.assertEqual(str, type(User.password))
+
+    def test_first_name_is_public_str(self):
+        self.assertEqual(str, type(User.first_name))
+
+    def test_last_name_is_public_str(self):
+        self.assertEqual(str, type(User.last_name))
+
+    def test_two_users_unique_ids(self):
+        self.assertNotEqual(User().id, User().id)
+
+    def test_two_users_different_created_at(self):
+        self.assertLess(User().created_at, User().created_at)
+
+    def test_two_users_different_updated_at(self):
+        self.assertLess(User().updated_at, User().updated_at)
+
+    def test_str_representation(self):
+        dt = datetime.today()
+        dt_repr = repr(dt)
+        us = User()
+        us.id = "123456"
+        us.created_at = us.updated_at = dt
+        self.assertIn("[User] (123456)", us.__str__())
+        self.assertIn("'id': '123456'", us.__str__())
+        self.assertIn("'created_at': " + dt_repr, us.__str__())
+        self.assertIn("'updated_at': " + dt_repr, us.__str__())
+
+    def test_args_unused(self):
+        self.assertNotIn(None, User(None).__dict__.values())
+
+    def test_instantiation_with_kwargs(self):
+        dt = datetime.today()
+        dt_iso = dt.isoformat()
+        us = User(id="345", created_at=dt_iso, updated_at=dt_iso)
+        self.assertEqual(us.id, "345")
+        self.assertEqual(us.created_at, dt)
+        self.assertEqual(us.updated_at, dt)
+
+    def test_instantiation_with_None_kwargs(self):
+        with self.assertRaises(TypeError):
+            User(id=None, created_at=None, updated_at=None)
+
+
+class TestUserSaving(TestCase):
     """
     Unittest for the class User
     """
 
-    def test_init(self):
-        """
-        unittest for the instantiation of the Amenity
-        :return: None
-        """
-        _user = User()
-        self.assertIsNotNone(_user)
-        self.assertIsNotNone(_user, User)
-        self.assertTrue(hasattr(_user, 'id'))
-        self.assertTrue(hasattr(_user, 'created_at'))
-        self.assertTrue(hasattr(_user, 'updated_at'))
-        _user_dict = _user.to_dict()
 
-        # testing *args and **kwargs
-        new_user = User(**_user_dict)
-        self.assertIsNotNone(new_user)
-        self.assertIsInstance(new_user, User)
-        self.assertTrue(hasattr(new_user, 'id'))
-        self.assertTrue(hasattr(new_user, 'created_at'))
-        self.assertTrue(hasattr(new_user, 'updated_at'))
 
     def test_save(self):
         """
