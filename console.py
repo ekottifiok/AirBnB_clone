@@ -3,7 +3,6 @@
 contains the entry point of the command interpreter
 """
 import cmd
-from json import dump
 from models import storage
 from models.base_model import BaseModel
 from models.user import User
@@ -88,7 +87,7 @@ class HBNBCommand(cmd.Cmd):
         print("")
         return True
 
-    def do_create(self, arg: str):
+    def do_create(self, arg):
         """
         handles the create command
         :param arg: accepts keyword create
