@@ -2,7 +2,6 @@
 """
 contains the entry point of the command interpreter
 """
-from __future__ import annotations
 import cmd
 from json import dump
 from models import storage
@@ -18,7 +17,7 @@ accepted_model = ['BaseModel', 'User', 'City',
                   'Place', 'Amenity', 'Review', 'State']
 
 
-def parse_arg(arg: str, no_args=1) -> list[str] | None:
+def parse_arg(arg: str, no_args=1):
     if arg == '':
         print('** class name missing **')
         return None
@@ -62,7 +61,7 @@ class HBNBCommand(cmd.Cmd):
         """
         return False
 
-    def do_help(self, arg: str) -> bool | None:
+    def do_help(self, arg: str):
         """
         handles the help command
         :param arg: accepts keyword help
@@ -181,7 +180,7 @@ class HBNBCommand(cmd.Cmd):
             return
         arg_array = arg[1:-1].split('(')
         command = arg_array[0]
-        if command not in HBNBCommand._instance_command:
+        if command not in ['all', 'count', 'show', 'destroy', 'update']:
             return
         if command == 'all':
             self.do_all('User')
