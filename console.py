@@ -95,10 +95,10 @@ class HBNBCommand(cmd.Cmd):
         """
         arg_create = parse_arg(arg)
         if arg_create is None:
-            return False
+            return
         len_array = len(arg_create)
         if len_array != 1:
-            return False
+            return
         print(eval(arg_create[0])().id)
         storage.save()
 
@@ -110,7 +110,7 @@ class HBNBCommand(cmd.Cmd):
         """
         arg_show = parse_arg(arg, 2)
         if arg_show is None:
-            return False
+            return
         object_id = f'{arg_show[0]}.{arg_show[1]}'
         print(storage.all().get(object_id))
 
@@ -122,7 +122,7 @@ class HBNBCommand(cmd.Cmd):
         """
         arg_show = parse_arg(arg, 2)
         if arg_show is None:
-            return False
+            return
         del storage.all()[f'{arg_show[0]}.{arg_show[1]}']
         storage.save()
 
